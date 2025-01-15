@@ -19,7 +19,6 @@ function Cart() {
       }}>
         <h1>Carrito 🛒</h1>
         <div className="Carrito">
-          {/* Aca tendria que hacer el map del carrito */}
           {
             cartItems.map((item) => (
             <CartItemCard key={item.id} cantidad={item.quantity} {...item} />

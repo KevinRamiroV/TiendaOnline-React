@@ -19,19 +19,26 @@ export const CartProvider = ({ children }) => {
       );
     } else {
       setCartItems((prevCart) => [...prevCart, { ...product, quantity }]);
-  };
-  
+  };};
+  const removeFromCart = (product, quantity) => {
+    setCartItems((prevCart) => 
+        prevCart.map((item) =>
+                item.id === product.id
+                    ? { ...item, quantity: item.quantity - quantity }
+                    : item
+            )
+            .filter((item) => item.quantity > 0) // Elimina productos con cantidad <= 0
+    );
+};
+
+  const getTotalItems = () =>cartItems.reduce((total, item) => total + item.quantity, 0);
   CartProvider.propTypes = {
     children: PropTypes.node.isRequired,
   };
-  };
-
-  const getTotalItems = () =>
-    cartItems.reduce((total, item) => total + item.quantity, 0);
-
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, getTotalItems }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, getTotalItems }}>
       {children}
     </CartContext.Provider>
   );
+  
 };
