@@ -20,23 +20,33 @@ export const CartProvider = ({ children }) => {
     } else {
       setCartItems((prevCart) => [...prevCart, { ...product, quantity }]);
   };};
-  const removeFromCart = (product, quantity) => {
-    setCartItems((prevCart) => 
-        prevCart.map((item) =>
-                item.id === product.id
-                    ? { ...item, quantity: item.quantity - quantity }
-                    : item
-            )
-            .filter((item) => item.quantity > 0) // Elimina productos con cantidad <= 0
-    );
-};
+  const handleItemCartQuantity = (product, quantity) => {
+    console.log("Remover del carrito");
+    
+    const existingProduct = cartItems.find((item) => item.id === product.id);
+    if (existingProduct) {
+      setCartItems((prevCart) =>
+        prevCart.map((item) => {
+            if (item.id === product.id) {
+              const newQuantity = item.quantity + quantity;
+              if (newQuantity <= 0) {
+                return null; // Marca el producto para eliminación
+              }
+              return{ ...item, quantity: newQuantity }; // Actualiza la cantidad si es mayor a 0
+            }return item;// Otros productos permanecen iguales
+          }).filter(Boolean) // Elimina productos marcados como `null`
+      );
+    } else {
+      console.log("El producto no está en el carrito.");
+    }
+  };
 
   const getTotalItems = () =>cartItems.reduce((total, item) => total + item.quantity, 0);
   CartProvider.propTypes = {
     children: PropTypes.node.isRequired,
   };
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, getTotalItems }}>
+    <CartContext.Provider value={{ cartItems, addToCart, handleItemCartQuantity, getTotalItems }}>
       {children}
     </CartContext.Provider>
   );

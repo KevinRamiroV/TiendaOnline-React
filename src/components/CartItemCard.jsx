@@ -5,8 +5,23 @@ import { Link } from "react-router-dom";
 
 
 function CartItemCard({ id, nombre, precio, descripcion, cantidad, imagenes }) {
-    const { removeFromCart } = useCart();
-
+    const { cartItems } = useCart();
+    const product = cartItems.find((item) => item.id === id);
+    const decrementValue = -1;
+    const IncrementValue = 1;
+    
+    const { handleItemCartQuantity } = useCart();
+    const handleDecreaseQuantity = () =>{
+        console.log(product);
+        handleItemCartQuantity(product, decrementValue);
+    }
+    const handleIncrementQuantity = () =>{
+        console.log(product);
+        handleItemCartQuantity(product, IncrementValue);
+    }
+    if (!product) {
+        return <h2>El producto no existe</h2>;
+      }
     return (
         <>
             <Card className="Cart-card">
@@ -40,14 +55,14 @@ function CartItemCard({ id, nombre, precio, descripcion, cantidad, imagenes }) {
                         <Button 
                             variant="contained" 
                             sx={{ backgroundColor:'#6da87c' }} 
-                            onClick={removeFromCart}
+                            onClick={handleDecreaseQuantity}
                         >
                             -
                         </Button>
                         <Button 
                             variant="contained" 
                             sx={{ backgroundColor:'#6da87c' }} 
-                            //onClick={handleItemIncrement}
+                            onClick={handleIncrementQuantity}
                         >
                             +
                         </Button>
