@@ -21,8 +21,6 @@ export const CartProvider = ({ children }) => {
       setCartItems((prevCart) => [...prevCart, { ...product, quantity }]);
   };};
   const handleItemCartQuantity = (product, quantity) => {
-    console.log("Remover del carrito");
-    
     const existingProduct = cartItems.find((item) => item.id === product.id);
     if (existingProduct) {
       setCartItems((prevCart) =>

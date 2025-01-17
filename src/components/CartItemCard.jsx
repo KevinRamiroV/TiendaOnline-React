@@ -12,11 +12,9 @@ function CartItemCard({ id, nombre, precio, descripcion, cantidad, imagenes }) {
     
     const { handleItemCartQuantity } = useCart();
     const handleDecreaseQuantity = () =>{
-        console.log(product);
         handleItemCartQuantity(product, decrementValue);
     }
     const handleIncrementQuantity = () =>{
-        console.log(product);
         handleItemCartQuantity(product, IncrementValue);
     }
     if (!product) {
