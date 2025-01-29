@@ -2,32 +2,28 @@ import '../styles/styles.css';
 import PropTypes from 'prop-types';
 import ItemList from './ItemList';
 import { useEffect, useState } from 'react';
-import { products } from '../data/products';
 import { CircularProgress, Box } from '@mui/material';
+import useFetch from '../Hooks/useFetch';
 
 const ItemListContainer = ({ selectedCategory }) => {
+  const { data, loading, error } = useFetch('products');
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
+    if (loading) return; // Espera a que termine de cargar
+    if (data.length === 0) return; // Espera a que data tenga contenido
+  
+    console.log('Data obtenida:', data);
+  
+    const products = data;
+    if (selectedCategory) {
+      setItems(products.filter((product) => product.categoria === selectedCategory));
+    } else {
+      setItems(products);
+    }
+  }, [data, selectedCategory, loading]);
 
-    setLoading(true);
 
-    const fetchProductos = new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(products);
-      }, 1000);
-    });
-
-    fetchProductos.then((data) => {
-      if (selectedCategory) {
-        setItems(data.filter((product) => product.categoria == selectedCategory));
-      } else {
-        setItems(data);
-      }
-      setLoading(false);
-    });
-  }, [selectedCategory]);
 
   return (
     <div className='items-container'>

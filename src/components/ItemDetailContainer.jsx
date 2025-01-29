@@ -1,19 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../data/products";
 import { useCart } from "../data/context/CartContext.jsx"; 
 import { Box, CardMedia, Button, TextField } from "@mui/material";
+import useFetch from "../Hooks/useFetch.jsx"
 
 const ItemDetailContainer = () => {
   const { id } = useParams();
   const { addToCart } = useCart(); 
   const [value, setValue] = useState(1);
-  const product = products.find((item) => item.id === parseInt(id));
-  const [selectedImage, setSelectedImage] = useState(product?.imagenes[0]);
+  const { data, loading } = useFetch('products')
+  const product = data.find((item) => item.id === parseInt(id));
+  const [selectedImage, setSelectedImage] = useState([product?.imagenes[0]]);
 
-  if (!product) {
+  useEffect(() => {
+    if (product) {
+      setSelectedImage(product.imagenes[0]); // Primera imagen del producto
+    }
+  }, [product]);
+
+  if (loading) {
+    return <h2></h2>;
+  } else if (!product) {
     return <h2>El producto no existe</h2>;
   }
+
+  
 
   const handleChange = (event) => {
     let newValue = parseInt(event.target.value, 10);
@@ -33,6 +44,7 @@ const ItemDetailContainer = () => {
   };
 
   return (
+    
    <div className="ItemDetail-Home">
     <div className="container-details">
 		<Box sx={{ display:"flex" , width:"80%" , justifyContent:"space-between" , marginTop:"5em" , }}>
