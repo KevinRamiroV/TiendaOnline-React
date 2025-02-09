@@ -6,7 +6,7 @@ import { CircularProgress, Box } from '@mui/material';
 import useFetch from '../Hooks/useFetch';
 
 const ItemListContainer = ({ selectedCategory }) => {
-  const { data, loading, error } = useFetch('products');
+  const { data, loading } = useFetch('products');
   const [items, setItems] = useState([]);
   
   useEffect(() => {

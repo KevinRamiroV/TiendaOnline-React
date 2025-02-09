@@ -109,6 +109,12 @@
 .addToCartButton{
   background-color: #6da87c m !important;
 }
+.CartConfirmButton{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4rem;
+}
   .footer {
     display: flex;
     height: 10vh;

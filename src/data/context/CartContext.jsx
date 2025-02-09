@@ -6,6 +6,10 @@ export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+
+  const clearCart = ()=>{
+    setCartItems([]);
+  }
   
   const addToCart = (product, quantity) => {
     const existingProduct = cartItems.find((item) => item.id === product.id);
@@ -44,7 +48,7 @@ export const CartProvider = ({ children }) => {
     children: PropTypes.node.isRequired,
   };
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, handleItemCartQuantity, getTotalItems }}>
+    <CartContext.Provider value={{ cartItems, addToCart, handleItemCartQuantity, getTotalItems, clearCart }}>
       {children}
     </CartContext.Provider>
   );
